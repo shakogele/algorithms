@@ -1,3 +1,160 @@
+// Binary Search
+
+function binarySearch(numArray, key) {
+    var middleIdx = Math.floor(numArray.length / 2);
+    var middleElem = numArray[middleIdx];
+
+    if (middleElem === key) return true;
+    else if (middleElem < key && numArray.length > 1) {
+        return binarySearch(numArray.splice(middleIdx, numArray.length), key);
+    }
+    else if (middleElem > key && numArray.length > 1) {
+        return binarySearch(numArray.splice(0, middleIdx), key);
+    }
+    else return false;
+}
+
+binarySearch([5, 7, 12, 16, 36, 39, 42, 56, 71], 56);
+
+// Max Stock Profit
+
+function maxStockProfit(prices){
+  var maxProfit = -1;
+  var buyPrice = 0;
+  var sellPrice = 0;
+
+  var changeByPrice = true;
+
+  for(var i=0; i<prices.length; i++){
+    if(changeByPrice) buyPrice = prices[i];
+    sellPrice = prices[i+1];
+
+    if(sellPrice < buyPrice){
+      changeByPrice = true;
+    }else{
+      var tempProfit = sellPrice - buyPrice;
+      if(tempProfit > maxProfit){
+        maxProfit = tempProfit;
+      }
+      changeByPrice = false;
+    }
+  }
+  return maxProfit;
+}
+
+
+maxStockProfit([5,3,8,2,1,4])
+
+// Merge Sort
+
+function mergeSort(arr){
+  if(arr.length<2){
+    return arr;
+  }
+  var middleInd = Math.floor(arr.length/2);
+  var firstHalf = arr.slice(0, middleInd);
+  var secondHalf = arr.slice(middleInd);
+
+  return merge(mergeSort(firstHalf), mergeSort(secondHalf));
+}
+
+function merge(sortedArr1, sortedArr2){
+  var result = [];
+  while(sortedArr1.length && sortedArr2.length){
+    var minElem;
+    if(sortedArr1[0] < sortedArr2[0]){
+      minElem = sortedArr1.shift();
+    }else{
+      minElem = sortedArr2.shift();
+    }
+    result.push(minElem);
+  }
+  if(sortedArr1.length) {
+    result = result.concat(sortedArr1);
+  }else{
+    result = result.concat(sortedArr2);
+  }
+  return result;
+}
+
+console.log(mergeSort([5,3,8,2,1,4]))
+// Bubble Sort
+function bubbleSort(arr){
+  for(var i=arr.length; i>0; i--){
+    for(var j=0; j<i; j++){
+      if(arr[j] > arr[j+1]){
+        var temp = arr[j];
+        arr[j] = arr[j+1];
+        arr[j+1] = temp;
+      }
+    }
+  }
+  console.log(arr);
+}
+bubbleSort([5,3,8,2,1,4]);
+
+// Sieve of Eratostenes
+
+function sieveOfErathosthenes(num){
+  let primeArray = [];
+  let results = [];
+  for(let i=0; i<num; i++){
+    primeArray[i] = true;
+  }
+  primeArray[0] = false;
+  primeArray[1] = false;
+
+  for(let i=2; i<Math.sqrt(num); i++){
+    for(let j=2; j*i<num; j++){
+      primeArray[i*j] = false;
+    }
+  }
+
+  for(let i=0; i<num; i++){
+    if(primeArray[i]){
+      results.push(i);
+    }
+  };
+  return results;
+}
+
+sieveOfErathosthenes(20);
+
+
+// Memoized fibonacci the best
+
+function fibMemo(index, cache){
+  cache = cache || [];
+  if(cache[index]){
+    return cache[index];
+  }
+  else{
+    if(index<3){
+      return 1;
+    }else{
+      cache[index] = fibMemo(index-1, cache) + fibMemo(index-2, cache);
+    }
+  }
+  return cache[index];
+}
+
+fibMemo(50);
+
+// Memoized fibonacci
+function fibMemo(index){
+  let arr = [];
+  for(let i=1; i<=index; i++){
+    if(i<3){
+      arr[i] = 1;
+    }else{
+      arr[i] = arr[i-1] + arr[i-2];
+    }
+  }
+  return arr[index];
+}
+
+fibMemo(50);
+
 // fibonacci
 function fibonacci(position){
   if(position<3){
